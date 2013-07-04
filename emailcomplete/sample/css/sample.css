@@ -1,0 +1,12 @@
+body {
+	background: #f5f5f5;
+	min-height: 100%;
+}
+
+.wrapper {
+	background: #fff;
+	min-height: 100%;
+	width: 880px;
+	margin: 0 auto;
+	padding: 40px;
+}
