@@ -69,9 +69,9 @@
 					$('#' + id).on('dblclick', '.jq-ec-email', function() {
 						
 						methods.update.call($this, options);
-						var val = $('input', this).first().val();
-						if($('input', this).last().val() != '') {
-							val = "<" + $('input', this).last().val() + "> " + val;
+						var val = $('input[data-field="email"]', this).val();
+						if($('input[data-field="name"]', this).val() != '') {
+							val = $('input[data-field="name"]', this).val() + " <" +  val + ">";
 						}
 						$(this).replaceWith($this);
 						$this.text(val);
@@ -85,14 +85,13 @@
 					$('#' + id).on('keypress', '.textarea', function(e) {
 						if(!e.ctrlKey && !e.altKey && !e.shiftKey) {
 							switch(e.charCode) {
-							case KEY_COMMA:
-							case KEY_ENTER:
-								// Create email box
-								e.preventDefault();
-								e.stopPropagation();
-								//$this.emailcomplete('update');
-								methods.update.call($this, options);
-								break;
+								case KEY_COMMA:
+								case KEY_ENTER:
+									// Create email box
+									e.preventDefault();
+									e.stopPropagation();
+									methods.update.call($this, options);
+									break;
 							}
 						}
 					});
@@ -118,7 +117,12 @@
 				});
 			}
 		},
-		update : function() {
+		
+		/**
+		 * Update the field
+		 * @param val (optional) the new value
+		 */
+		update : function(val) {
 			var $this = $(this);
 			var n = $this.attr('data-name');
 			if(n.indexOf(']') == -1) {
@@ -130,16 +134,19 @@
 			}
 			var tpl = $('<span class="jq-ec-email">' +
 						'<span class="jq-ec-label"></span>' +
-						'<input type="hidden" name="'+$this.attr('data-name')+'[]" value="" />' +
-						'<input type="hidden" name="'+n+'[]" value="" />' +
+						'<input type="hidden" data-field="email" name="'+$this.attr('data-name')+'[]" value="" />' +
+						'<input type="hidden" data-field="name" name="'+n+'[]" value="" />' +
 						'<span class="jq-ec-close"></span>' +
 						'<span>');
 			
 			// Check if field is not empty
-			var val = $this.text().trim();
+			if(typeof val == 'undefined')
+				val = $this.text().trim();
+			
 			if(val == '' || val == ',') {
 				return;
 			}
+			
 			var arr = val.split(',');
 			for(var i = 0; i < arr.length; i++) {
 				var rv = arr[i].trim();
@@ -169,8 +176,8 @@
 					if(!seemsValid) {
 						spn.addClass('jq-ec-invalid');
 					}
-					$('input', spn).first().val(email);
-					$('input', spn).last().val(realname);
+					$('input[data-field="email"]', spn).val(email);
+					$('input[data-field="name"]', spn).val(realname);
 					$this.text("");
 					$this.before(spn);
 				}
@@ -203,6 +210,7 @@
 		
 		}
 	};
+	
 	$.fn.emailcomplete = function(method) {
 
 		// Method calling logic
