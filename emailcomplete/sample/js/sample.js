@@ -8,8 +8,7 @@ $('.textarea.emailcomplete').each(function() {
 	input.autocomplete({
 		source : ['Ids Klijnsma <i.klijnsma@wewantfur.com>', 
 		          'Danny Ruchtie <d.ruchtie@wewantfur.com>', 
-		          'Danny Ruchtie <danny@wewantfur.com>', 
-		          'Danny Ruchtie <d.ruchtie@wewantfur.nl>'],
+		          'Test user <test@wewantfur.com>'],
 		
 		select : function(event, ui) {
 			// Override default select action
